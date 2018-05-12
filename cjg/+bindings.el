@@ -6,8 +6,9 @@
     (funcall cmd)))
 
 ;; Example 1
-(defun counsel-ag-thing-at-point ()
+(defun counsel-rg-thing-at-point ()
   (interactive)
+  ;; TODO: fix this call to work with counsel-rg
   (ivy-with-thing-at-point 'counsel-ag))
 
 ;; Example 2
@@ -18,7 +19,7 @@
 (map!
  ;; --- <leader> -------------------------------------
  (:leader
-   (:desc "Search for Word" :nv "*" #'counsel-ag-thing-at-point)
+   (:desc "Search for Word" :nv "*" #'counsel-rg-thing-at-point)
    (:desc "resume" :prefix "l"
      :desc "Ivy Resume"              :nv "r"  #'ivy-resume
      )))
