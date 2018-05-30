@@ -2,9 +2,6 @@
 ;; Copy me to ~/.doom.d/init.el or ~/.config/doom/init.el, then edit me!
 
 (doom! :feature
-       (popup            ; tame sudden yet inevitable temporary windows
-        +all             ; catch all popups that start with an asterix
-        +defaults)       ; default popup rules
        ;debugger          ; FIXME stepping through code, to help you add bugs
        eval              ; run code, run (also, repls)
        (evil +everywhere); come to the dark side, we have cookies
@@ -19,10 +16,13 @@
         +childframe)
        version-control   ; remember, remember that commit in November
        workspaces        ; tab emulation, persistence & separate workspaces
+       (popup            ; tame sudden yet inevitable temporary windows
+        +all             ; catch all popups that start with an asterix
+        +defaults)       ; default popup rules
 
        :completion
        (company           ; the ultimate code completion backend
-        +childframe)
+        +childframe +auto)
        ;helm             ; the *other* search engine for love and life
        ;ido              ; the other *other* search engine...
        (ivy               ; a search engine for love and life
@@ -48,11 +48,11 @@
        eshell            ; a consistent, cross-platform shell (WIP)
        gist              ; interacting with github gists
        imenu             ; an imenu sidebar and searchable code index
-       impatient-mode    ; show off code over HTTP
        macos             ; MacOS-specific commands
        make              ; run make tasks from Emacs
        magit             ;
        neotree           ; a project drawer, like NERDTree for vim
+       ;impatient-mode    ; show off code over HTTP
        ;password-store    ; password manager for nerds
        pdf               ; pdf enhancements
        rgb               ; creating color strings

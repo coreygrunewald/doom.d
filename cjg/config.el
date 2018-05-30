@@ -13,6 +13,7 @@
 (setq doom-theme 'gruvbox)
 (setq mac-command-modifier 'alt
       mac-option-modifier  'meta)
+
 (setq-default line-spacing 0.4)
 
 (global-visual-line-mode t)
@@ -29,9 +30,9 @@
 ;; By setting company-idle-delay to a non-nil float, it enables company mode everywhere
 (after! company
   ;;Always include company-files as a backend to autocomplete potential file system references.
-  (push 'company-files company-backends)
-  (setq company-idle-delay 0.2
-        company-minimum-prefix-length 2))
+  (push 'company-files company-backends))
+  ;;(setq company-idle-delay 0.2
+  ;;      company-minimum-prefix-length 2))
 
 (defun cjg/add-js-prettify-symbols()
   (push '("function" . ?ƒ) prettify-symbols-alist)
@@ -80,36 +81,6 @@
 ;; NOTE: This is needed for Emacs 26
 (setq default-frame-alist '((ns-transparent-titlebar . t) (ns-appearance . 'nil)))
 
-(defun font-name-replace-size (font-name new-size)
-  (let ((parts (split-string font-name "-")))
-    (setcar (nthcdr 7 parts) (format "%d" new-size))
-    (mapconcat 'identity parts "-")))
-
-(defun increment-default-font-height (delta)
-  "Adjust the default font height by DELTA on every frame.
-    The pixel size of the frame is kept (approximately) the same.
-    DELTA should be a multiple of 10, in the units used by the
-    :height face attribute."
-  (let* ((new-height (+ (face-attribute 'default :height) delta))
-         (new-point-height (/ new-height 10)))
-    (dolist (f (frame-list))
-      (with-selected-frame f
-        ;; Latest 'set-frame-font supports a "frames" arg, but
-        ;; we cater to Emacs 23 by looping instead.
-        (set-frame-font (font-name-replace-size (face-font 'default)
-                                                new-point-height)
-                        t)))
-    (set-face-attribute 'default nil :height new-height)
-    (message "default font size is now %d" new-point-height)))
-
-(defun increase-default-font-height ()
-  (interactive)
-  (increment-default-font-height 10))
-
-(defun decrease-default-font-height ()
-  (interactive)
-  (increment-default-font-height -10))
-
 (after! magit
  (setq magit-display-buffer-function 'magit-display-buffer-fullframe-status-v1))
 
@@ -152,10 +123,42 @@
       (setq shell-file-name current-shell)
       res)))
 
+(setq js-indent-level 4)
+
 (advice-add 'projectile-files-via-ext-command :around #'cjg/advise-shell-command)
 (advice-add 'merlin-command :around #'cjg/advise-shell-command)
 (advice-add 'merlin--call-process :around #'cjg/advise-shell-command)
 ;;(advice-add 'tuareg-shell-command-to-string :around #'cjg/advise-shell-command)
+
+(defun font-name-replace-size (font-name new-size)
+  (let ((parts (split-string font-name "-")))
+    (setcar (nthcdr 7 parts) (format "%d" new-size))
+    (mapconcat 'identity parts "-")))
+
+(defun increment-default-font-height (delta)
+  "Adjust the default font height by DELTA on every frame.
+    The pixel size of the frame is kept (approximately) the same.
+    DELTA should be a multiple of 10, in the units used by the
+    :height face attribute."
+  (let* ((new-height (+ (face-attribute 'default :height) delta))
+         (new-point-height (/ new-height 10)))
+    (dolist (f (frame-list))
+      (with-selected-frame f
+        ;; Latest 'set-frame-font supports a "frames" arg, but
+        ;; we cater to Emacs 23 by looping instead.
+        (set-frame-font (font-name-replace-size (face-font 'default)
+                                                new-point-height)
+                        t)))
+    (set-face-attribute 'default nil :height new-height)
+    (message "default font size is now %d" new-point-height)))
+
+(defun increase-default-font-height ()
+  (interactive)
+  (increment-default-font-height 10))
+
+(defun decrease-default-font-height ()
+  (interactive)
+  (increment-default-font-height -10))
 
 (global-set-key (kbd "C-M-=") 'increase-default-font-height)
 (global-set-key (kbd "C-M--") 'decrease-default-font-height)
