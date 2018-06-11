@@ -17,7 +17,7 @@
 ;;      doom-big-font (font-spec :family "Fira Mono" :size 19))
 
 (setq doom-theme 'doom-one)
-(setq mac-command-modifier 'super)
+(setq mac-command-modifier 'super
       mac-option-modifier  'meta)
 
 (setq-default line-spacing 0.4)
