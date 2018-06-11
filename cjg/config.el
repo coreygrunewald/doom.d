@@ -1,6 +1,6 @@
 ;;; private/cjg/config.el -*- lexical-binding: t; -*-
 
-(if (featurep! +bindings) (load! +bindings))
+(if (featurep! +bindings) (load! "+bindings"))
 
 (def-package! gruvbox)
 (def-package! company-flow)
@@ -9,9 +9,15 @@
 (def-package! ocp-indent)
 
 ;; TODO: enhance company flow predicate to only check files with // @flow at the top
-(setq doom-font (font-spec :family "Input Mono Narrow" :weight 'light :size 13))
-(setq doom-theme 'gruvbox)
-(setq mac-command-modifier 'alt
+(setq doom-font (font-spec :family "Hack" :size 12))
+;;(setq
+;;      doom-font (font-spec :family "Fira Mono" :size 14)
+;;      doom-variable-pitch-font (font-spec :family "Fira Sans")
+;;      doom-unicode-font (font-spec :family "DejaVu Sans Mono")
+;;      doom-big-font (font-spec :family "Fira Mono" :size 19))
+
+(setq doom-theme 'doom-one)
+(setq mac-command-modifier 'super)
       mac-option-modifier  'meta)
 
 (setq-default line-spacing 0.4)
@@ -30,9 +36,8 @@
 ;; By setting company-idle-delay to a non-nil float, it enables company mode everywhere
 (after! company
   ;;Always include company-files as a backend to autocomplete potential file system references.
-  (push 'company-files company-backends))
-  ;;(setq company-idle-delay 0.2
-  ;;      company-minimum-prefix-length 2))
+  (push 'company-files company-backends)
+  (setq company-minimum-prefix-length 2))
 
 (defun cjg/add-js-prettify-symbols()
   (push '("function" . ?ƒ) prettify-symbols-alist)
@@ -44,8 +49,11 @@
 ;; 2. Figure out automatic file path look up for js / less files.
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
-(set! :company-backend 'js2-mode '(company-flow company-tern))
-(set! :company-backend 'rjsx-mode '(company-flow company-tern))
+;;(set! :company-backend 'js2-mode '(company-flow company-tern))
+;;(set! :company-backend 'rjsx-mode '(company-flow company-tern))
+
+(set! :company-backend 'js2-mode '(company-tern))
+(set! :company-backend 'rjsx-mode '(company-tern))
 
 (defun cjg-use-flow-from-node-modules ()
   (let* ((root (locate-dominating-file

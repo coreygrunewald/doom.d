@@ -8,3 +8,4 @@
 (package! flycheck-flow)
 (package! tern)
 (package! ocp-indent)
+(package! tao-theme)

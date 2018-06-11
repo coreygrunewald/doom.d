@@ -9,24 +9,22 @@
        (lookup           ; helps you navigate your code and documentation
         +devdocs         ; ...on devdocs.io online
         +docsets)        ; ...or in Dash docsets locally
-       services          ; TODO managing external services & code builders
        snippets          ; my elves. They type so I don't have to
        spellcheck        ; tasing you for misspelling mispelling
        (syntax-checker    ; tasing you for every semicolon you forget
         +childframe)
        version-control   ; remember, remember that commit in November
        workspaces        ; tab emulation, persistence & separate workspaces
-       (popup            ; tame sudden yet inevitable temporary windows
-        +all             ; catch all popups that start with an asterix
-        +defaults)       ; default popup rules
 
        :completion
        (company           ; the ultimate code completion backend
-        +childframe +auto)
+        +auto
+        +childframe)
        ;helm             ; the *other* search engine for love and life
        ;ido              ; the other *other* search engine...
        (ivy               ; a search engine for love and life
-        +childframe)
+        +childframe
+        +fuzzy)
 
        :ui
        doom              ; what makes DOOM look the way it does
@@ -34,32 +32,41 @@
        doom-modeline     ; a snazzy Atom-inspired mode-line
        doom-quit         ; DOOM quit-message prompts when you quit Emacs
        evil-goggles      ; display visual hints when editing in evil
+       fci               ; a `fill-column' indicator
        hl-todo           ; highlight TODO/FIXME/NOTE tags
        nav-flash         ; blink the current line after jumping
-       posframe          ; use child frames where possible (Emacs 26+ only)
+       neotree
+       (popup            ; tame sudden yet inevitable temporary windows
+        +all             ; catch all popups that start with an asterix
+        +defaults)       ; default popup rules
       ;tabbar            ; FIXME an (incomplete) tab bar for Emacs
       ;unicode           ; extended unicode support for various languages
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        window-select     ; visually switch windows
 
-       :tools
+       :emacs
        dired             ; making dired pretty [functional]
+       ediff             ; comparing files in Emacs
        electric-indent   ; smarter, keyword-based electric-indent
        eshell            ; a consistent, cross-platform shell (WIP)
-       gist              ; interacting with github gists
        imenu             ; an imenu sidebar and searchable code index
+       term              ; terminals in Emacs
+
+       :tools
+       editorconfig      ; let someone else argue about tabs vs spaces
+       ;ein              ; tame Jupyter notebooks
+       gist              ; interacting with github gists
        macos             ; MacOS-specific commands
        make              ; run make tasks from Emacs
        magit             ;
-       neotree           ; a project drawer, like NERDTree for vim
-       ;impatient-mode    ; show off code over HTTP
        ;password-store    ; password manager for nerds
        pdf               ; pdf enhancements
+       prodigy          ; FIXME managing external services & code builders
        rgb               ; creating color strings
        rotate-text       ; cycle region at point between text candidates
-       term              ; terminals in Emacs
        tmux              ; an API for interacting with tmux
        ;upload            ; map local to remote projects via ssh/ftp
+       ;wakatime
 
        :lang
        ;assembly          ; assembly for fun or debugging
@@ -78,9 +85,9 @@
        hy                ; readability of scheme w/ speed of python
        (java +meghanada) ; the poster child for carpal tunnel syndrome
        javascript        ; all(hope(abandon(ye(who(enter(here))))))
-       ;julia             ; a better, faster MATLAB
-       latex             ; writing papers in Emacs has never been so fun
-       ;ledger            ; an accounting system in Emacs
+       ;julia            ; a better, faster MATLAB
+       ;latex            ; writing papers in Emacs has never been so fun
+       ;ledger           ; an accounting system in Emacs
        lua               ; one-based indices? one-based indices
        markdown          ; writing docs for people to ignore
        nix               ; I hereby declare "nix geht mehr!"
@@ -118,6 +125,10 @@
       ; +wordnut         ; wordnet (wn) search
       ; +langtool)       ; a proofreader (grammar/style check) for Emacs
 
+       :collab
+       ;floobits          ; peer programming for a price
+       ;impatient-mode    ; show off code over HTTP
+
        :config
        ;; The default module set reasonable defaults for Emacs. It also provides
        ;; a Spacemacs-inspired keybinding scheme, a custom yasnippet library
@@ -125,6 +136,7 @@
        ;; and additional ex commands for evil-mode. Use it as a reference for
        ;; your own modules.
        (default +bindings +snippets +evil-commands)
+
        :private
        (cjg +bindings))
 
