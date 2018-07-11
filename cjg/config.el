@@ -9,7 +9,7 @@
 (def-package! ocp-indent)
 
 ;; TODO: enhance company flow predicate to only check files with // @flow at the top
-(setq doom-font (font-spec :family "Hack" :size 12))
+(setq doom-font (font-spec :family "Fira Code" :size 12))
 ;;(setq
 ;;      doom-font (font-spec :family "Fira Mono" :size 14)
 ;;      doom-variable-pitch-font (font-spec :family "Fira Sans")
@@ -52,8 +52,8 @@
 ;;(set! :company-backend 'js2-mode '(company-flow company-tern))
 ;;(set! :company-backend 'rjsx-mode '(company-flow company-tern))
 
-(set! :company-backend 'js2-mode '(company-tern))
-(set! :company-backend 'rjsx-mode '(company-tern))
+(set-company-backend! 'js2-mode '(company-tern))
+(set-company-backend! 'rjsx-mode '(company-tern))
 
 (defun cjg-use-flow-from-node-modules ()
   (let* ((root (locate-dominating-file
@@ -137,6 +137,7 @@
 (advice-add 'merlin-command :around #'cjg/advise-shell-command)
 (advice-add 'merlin--call-process :around #'cjg/advise-shell-command)
 ;;(advice-add 'tuareg-shell-command-to-string :around #'cjg/advise-shell-command)
+;;(advice-add 'irony--server-send-command :around #'cjg/advise-shell-command)
 
 (defun font-name-replace-size (font-name new-size)
   (let ((parts (split-string font-name "-")))
@@ -170,3 +171,20 @@
 
 (global-set-key (kbd "C-M-=") 'increase-default-font-height)
 (global-set-key (kbd "C-M--") 'decrease-default-font-height)
+
+(setq-default +cc-default-compiler-options
+  `((c-mode . nil)
+    (c++-mode
+     . ,(list "-std=c++1z" ; use C++17 draft by default
+              ))
+    (objc-mode . nil)))
+
+(setq cjg-irony-reparse-timer 'nil)
+(defun cjg-should-re-parse ()
+  (if (null cjg-irony-reparse-timer)
+      (setq cjg-irony-reparse-timer
+            (run-with-timer 3 60 (lambda()
+                                    (irony-server-kill)
+                                    (irony-parse-buffer-async))))))
+
+(add-hook 'irony-mode-hook 'cjg-should-re-parse)
