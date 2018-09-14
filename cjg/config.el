@@ -7,36 +7,23 @@
 (def-package! company-tern)
 (def-package! flycheck-flow)
 (def-package! ocp-indent)
+(def-package! flow-minor-mode)
 
-;; TODO: enhance company flow predicate to only check files with // @flow at the top
 (setq doom-font (font-spec :family "Fira Code" :size 12))
-;;(setq
-;;      doom-font (font-spec :family "Fira Mono" :size 14)
-;;      doom-variable-pitch-font (font-spec :family "Fira Sans")
-;;      doom-unicode-font (font-spec :family "DejaVu Sans Mono")
-;;      doom-big-font (font-spec :family "Fira Mono" :size 19))
+(setq doom-big-font (font-spec :family "Fira Code" :size 18))
+(setq-default line-spacing 0.4)
+(setq-default standard-indent 4)
+(setq-default tab-stop-list (number-sequence 4 120 4))
+(setq-default tab-always-indent 'complete)
+;; dtrt-indent doesn't seem to work well with less-css-mode?
+(setq-default doom-detect-indentation-excluded-modes (append '(less-css-mode) doom-detect-indentation-excluded-modes))
 
 (setq doom-theme 'doom-one)
 (setq mac-command-modifier 'super
       mac-option-modifier  'meta)
 
-(setq-default line-spacing 0.4)
-
-(global-visual-line-mode t)
-
-(defun cjg-javascript-flow-predicate()
-  (and
-   buffer-file-name
-   (file-exists-p buffer-file-name)
-   (cjg-check-for-buffer-text
-    (buffer-substring-no-properties (point-min) (point-max))
-    "@flow")
-   (locate-dominating-file buffer-file-name ".flowconfig")))
-
 ;; By setting company-idle-delay to a non-nil float, it enables company mode everywhere
 (after! company
-  ;;Always include company-files as a backend to autocomplete potential file system references.
-  (push 'company-files company-backends)
   (setq company-minimum-prefix-length 2))
 
 (defun cjg/add-js-prettify-symbols()
@@ -44,16 +31,11 @@
   (push '("require" . ?ի) prettify-symbols-alist)
   (prettify-symbols-mode))
 
-;; TODO
-;; 1. integrate flow into javascript linting
-;; 2. Figure out automatic file path look up for js / less files.
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
-;;(set! :company-backend 'js2-mode '(company-flow company-tern))
-;;(set! :company-backend 'rjsx-mode '(company-flow company-tern))
+(set-company-backend! 'js2-mode '(company-flow company-tern company-files))
+(set-company-backend! 'rjsx-mode '(company-flow company-tern company-files))
 
-(set-company-backend! 'js2-mode '(company-tern))
-(set-company-backend! 'rjsx-mode '(company-tern))
 
 (defun cjg-use-flow-from-node-modules ()
   (let* ((root (locate-dominating-file
@@ -68,6 +50,9 @@
     (setq-local company-flow-executable flow)
     (setq-local flycheck-javascript-flow-executable flow)
     (setq-local flycheck-javascript-flow-coverage-executable flow)
+    ;; TODO: what does `flycheck-add-mode' exist?
+    ;; (flycheck-add-mode 'javascript-flow 'flow-minor-mode)
+    ;; (flycheck-add-mode 'javascript-eslint 'flow-minor-mode)
     (flycheck-add-next-checker 'javascript-flow 'javascript-eslint)
     (flycheck-add-next-checker 'javascript-eslint 'javascript-flow-coverage)
     ))
@@ -79,10 +64,12 @@
   (setq-default js2-include-node-externs +1)
   (add-hook 'js2-mode-hook 'js2-imenu-extras-mode)
   (add-hook 'js2-mode-hook 'tern-mode)
+  (add-hook 'js2-mode-hook 'flow-minor-enable-automatically)
   (add-hook 'js2-mode-hook 'cjg/add-js-prettify-symbols)
   (add-hook 'js2-mode-hook 'cjg-use-flow-from-node-modules)
   (add-hook 'rjsx-mode-hook 'js2-imenu-extras-mode)
   (add-hook 'rjsx-mode-hook 'tern-mode)
+  (add-hook 'rjsx-mode-hook 'flow-minor-enable-automatically)
   (add-hook 'rjsx-mode-hook 'cjg/add-js-prettify-symbols)
   (add-hook 'rjsx-mode-hook 'cjg-use-flow-from-node-modules))
 
@@ -92,14 +79,15 @@
 (after! magit
  (setq magit-display-buffer-function 'magit-display-buffer-fullframe-status-v1))
 
+(after! flycheck
+  (setq flycheck-checker-error-threshold 2000))
+
 (setq shell-command-default-error-buffer "*Messages*")
 
 ;; NOTE: this is need b/c zsh is breaking some command outputs
 ;; (setq shell-file-name "/bin/bash")
 
 (after! projectile
-  ;; TODO: projectile caching broken b/c of incomplete shell command output (truncated)
-  ;; try upgrading to newer emacs to see if it is fixed?
   (setq projectile-enable-caching t)
   (setq projectile-require-project-root t))
 
@@ -136,8 +124,6 @@
 (advice-add 'projectile-files-via-ext-command :around #'cjg/advise-shell-command)
 (advice-add 'merlin-command :around #'cjg/advise-shell-command)
 (advice-add 'merlin--call-process :around #'cjg/advise-shell-command)
-;;(advice-add 'tuareg-shell-command-to-string :around #'cjg/advise-shell-command)
-;;(advice-add 'irony--server-send-command :around #'cjg/advise-shell-command)
 
 (defun font-name-replace-size (font-name new-size)
   (let ((parts (split-string font-name "-")))

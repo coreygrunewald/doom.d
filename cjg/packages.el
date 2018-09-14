@@ -9,3 +9,4 @@
 (package! tern)
 (package! ocp-indent)
 (package! tao-theme)
+(package! flow-minor-mode)

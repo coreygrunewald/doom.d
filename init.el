@@ -20,10 +20,12 @@
        (company           ; the ultimate code completion backend
         +auto)
        ;+childframe)
-       ;helm             ; the *other* search engine for love and life
+       ;(helm             ; the *other* search engine for love and life
+       ; +fuzzy
+       ; +childframe)
        ;ido              ; the other *other* search engine...
        ivy               ; a search engine for love and life
-       ;+fuzzy
+       ; +fuzzy)
        ;+childframe)
 
        :ui
@@ -34,12 +36,15 @@
        evil-goggles      ; display visual hints when editing in evil
        ;fci               ; a `fill-column' indicator
        hl-todo           ; highlight TODO/FIXME/NOTE tags
+       ;modeline          ; snazzy, Atom-inspired modeline, plus API
        nav-flash         ; blink the current line after jumping
-       neotree
+      ;neotree           ; a project drawer, like NERDTree for vim
+       treemacs          ; a project drawer, like neotree but cooler
        (popup            ; tame sudden yet inevitable temporary windows
         +all             ; catch all popups that start with an asterix
         +defaults)       ; default popup rules
-      ;pretty-code
+      ;(pretty-code
+      ; +fira)
       ;tabbar            ; FIXME an (incomplete) tab bar for Emacs
       ;unicode           ; extended unicode support for various languages
        vc-gutter
@@ -47,6 +52,7 @@
        window-select     ; visually switch windows
 
        :editor
+       multiple-cursors  ; editing in many places at once
        ;parinfer          ; turn lisp into python, sort of
        rotate-text       ; cycle region at point between text candidates
 
@@ -55,6 +61,7 @@
        ediff             ; comparing files in Emacs
        electric          ; smarter, keyword-based electric-indent
        eshell            ; a consistent, cross-platform shell (WIP)
+       hideshow          ; basic code-folding support
        imenu             ; an imenu sidebar and searchable code index
        term              ; terminals in Emacs
        vc
@@ -67,10 +74,10 @@
        make              ; run make tasks from Emacs
        magit             ;
        ;password-store    ; password manager for nerds
-       pdf               ; pdf enhancements
+       ;pdf               ; pdf enhancements
        prodigy          ; FIXME managing external services & code builders
        rgb               ; creating color strings
-       tmux              ; an API for interacting with tmux
+       ;tmux              ; an API for interacting with tmux
        ;upload            ; map local to remote projects via ssh/ftp
        ;wakatime
 
@@ -88,8 +95,8 @@
        emacs-lisp        ; drown in parentheses
        ess               ; emacs speaks statistics
        go                ; the hipster dialect
-       (haskell +intero) ; a language that's lazier than I am
-       hy                ; readability of scheme w/ speed of python
+       ;(haskell +intero) ; a language that's lazier than I am
+       ;hy                ; readability of scheme w/ speed of python
        (java +meghanada) ; the poster child for carpal tunnel syndrome
        javascript        ; all(hope(abandon(ye(who(enter(here))))))
        ;julia            ; a better, faster MATLAB
@@ -97,7 +104,7 @@
        ;ledger           ; an accounting system in Emacs
        lua               ; one-based indices? one-based indices
        markdown          ; writing docs for people to ignore
-       nix               ; I hereby declare "nix geht mehr!"
+       ;nix               ; I hereby declare "nix geht mehr!"
        ocaml             ; an objective camel
        (org              ; organize your plain life in plain text
         +attach          ; custom attachment system
@@ -109,8 +116,8 @@
         )
        ;perl              ; write code no one else can comprehend
        php               ; perl's insecure younger brother
-       plantuml          ; diagrams for confusing people more
-       purescript        ; javascript, but functional
+       ;plantuml          ; diagrams for confusing people more
+       ;purescript        ; javascript, but functional
        python            ; beautiful is better than ugly
        rest              ; Emacs as a REST client
        ruby              ; 1.step do {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
