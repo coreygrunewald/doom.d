@@ -21,7 +21,4 @@
    (:desc "Search for Word" :nv "*" #'counsel-ag-thing-at-point)
    (:desc "Swiper for Word" :nv "#" #'swiper-thing-at-point)
    (:desc "Tern Definition" :n "ct" #'tern-find-definition)
-   (:desc "resume" :prefix "l"
-     :desc "Ivy Resume"              :nv "r"  #'ivy-resume
-     )))
-
+   ))

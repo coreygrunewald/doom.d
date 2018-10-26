@@ -36,20 +36,24 @@
 (set-company-backend! 'js2-mode '(company-flow company-tern company-files))
 (set-company-backend! 'rjsx-mode '(company-flow company-tern company-files))
 
-
-(defun cjg-use-flow-from-node-modules ()
+(defun cjg/find-node-module-executable (execName)
   (let* ((root (locate-dominating-file
                 (or (buffer-file-name) default-directory)
                 "node_modules"))
-         (global-flow (executable-find "flow"))
-         (local-flow (expand-file-name "node_modules/.bin/flow"
-                                       root))
-         (flow (if (file-executable-p local-flow)
-                   local-flow
-                 global-flow)))
+         (global-exec (executable-find execName))
+         (local-exec (expand-file-name (concat "node_modules/.bin/" execName)
+                                       root)))
+         (if (file-executable-p local-exec)
+                   local-exec
+                 global-exec)))
+
+(defun cjg/use-node-modules ()
+  (let* ((flow (cjg/find-node-module-executable "flow"))
+         (eslint (cjg/find-node-module-executable "eslint")))
     (setq-local company-flow-executable flow)
     (setq-local flycheck-javascript-flow-executable flow)
     (setq-local flycheck-javascript-flow-coverage-executable flow)
+    (setq-local flycheck-javascript-eslint-executable eslint)
     ;; TODO: what does `flycheck-add-mode' exist?
     ;; (flycheck-add-mode 'javascript-flow 'flow-minor-mode)
     ;; (flycheck-add-mode 'javascript-eslint 'flow-minor-mode)
@@ -64,14 +68,14 @@
   (setq-default js2-include-node-externs +1)
   (add-hook 'js2-mode-hook 'js2-imenu-extras-mode)
   (add-hook 'js2-mode-hook 'tern-mode)
-  (add-hook 'js2-mode-hook 'flow-minor-enable-automatically)
+  ;(add-hook 'js2-mode-hook 'flow-minor-enable-automatically)
   (add-hook 'js2-mode-hook 'cjg/add-js-prettify-symbols)
-  (add-hook 'js2-mode-hook 'cjg-use-flow-from-node-modules)
+  (add-hook 'js2-mode-hook 'cjg/use-node-modules)
   (add-hook 'rjsx-mode-hook 'js2-imenu-extras-mode)
   (add-hook 'rjsx-mode-hook 'tern-mode)
-  (add-hook 'rjsx-mode-hook 'flow-minor-enable-automatically)
+  ;(add-hook 'rjsx-mode-hook 'flow-minor-enable-automatically)
   (add-hook 'rjsx-mode-hook 'cjg/add-js-prettify-symbols)
-  (add-hook 'rjsx-mode-hook 'cjg-use-flow-from-node-modules))
+  (add-hook 'rjsx-mode-hook 'cjg/use-node-modules))
 
 ;; NOTE: This is needed for Emacs 26
 (setq default-frame-alist '((ns-transparent-titlebar . t) (ns-appearance . 'nil)))
@@ -174,3 +178,8 @@
                                     (irony-parse-buffer-async))))))
 
 (add-hook 'irony-mode-hook 'cjg-should-re-parse)
+(setq dired-use-ls-dired nil)
+
+(after! fci-mode
+  ;NOTE: this doesn't actually work :(
+  (turn-off-fci-mode))

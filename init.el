@@ -29,12 +29,13 @@
        ;+childframe)
 
        :ui
+       ;;deft              ; notational velocity for Emacs
        doom              ; what makes DOOM look the way it does
        doom-dashboard    ; a nifty splash screen for Emacs
        doom-modeline     ; a snazzy Atom-inspired mode-line
        doom-quit         ; DOOM quit-message prompts when you quit Emacs
        evil-goggles      ; display visual hints when editing in evil
-       ;fci               ; a `fill-column' indicator
+       fci               ; a `fill-column' indicator
        hl-todo           ; highlight TODO/FIXME/NOTE tags
        ;modeline          ; snazzy, Atom-inspired modeline, plus API
        nav-flash         ; blink the current line after jumping
@@ -52,8 +53,9 @@
        window-select     ; visually switch windows
 
        :editor
+       format            ; automated prettiness
        multiple-cursors  ; editing in many places at once
-       ;parinfer          ; turn lisp into python, sort of
+       ;parinfer         ; turn lisp into python, sort of
        rotate-text       ; cycle region at point between text candidates
 
        :emacs
@@ -67,6 +69,7 @@
        vc
 
        :tools
+       docker
        editorconfig      ; let someone else argue about tabs vs spaces
        ;ein              ; tame Jupyter notebooks
        gist              ; interacting with github gists
